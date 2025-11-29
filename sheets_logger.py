@@ -1,16 +1,21 @@
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
+import streamlit as st
+import json
+from google.oauth2.service_account import Credentials
 
 # ---- CONFIG ----
 SHEET_ID = "1NMVAH4ERSChGQfnB9HwacOkQGzB7cEE2AxqZVKQhHs0"
 SHEET_NAME = "Sheet1"   # default sheet name
-SERVICE_ACCOUNT_FILE = "gcp_key.json"
 
-# ---- AUTH ----
-creds = Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE,
+
+gcp_info = json.loads(st.secrets["GCP_KEY"])
+
+creds = Credentials.from_service_account_info(
+    gcp_info,
     scopes=["https://www.googleapis.com/auth/spreadsheets"]
 )
+
 
 service = build("sheets", "v4", credentials=creds)
 sheet = service.spreadsheets()
