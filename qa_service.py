@@ -1,7 +1,13 @@
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import SentenceTransformerEmbeddings
-import subprocess
+
 import sys
+
+from groq import Groq
+import os
+
+# Create Groq client using secret key from Streamlit
+client = Groq(api_key=os.environ["GROQ_API_KEY"])
 
 # Ensure UTF-8 output
 sys.stdout.reconfigure(encoding='utf-8')
@@ -19,16 +25,12 @@ def load_retriever():
     )
     return db.as_retriever(search_kwargs={"k": 2})
 
-def run_ollama(prompt):
-    # Run ollama with UTF-8 safe encoding
-    result = subprocess.run([OLLAMA_PATH, "run", "phi3"],
-                        input=prompt.encode("utf-8"),
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        text=False)
-    # Decode output safely
-    return result.stdout.decode("utf-8", errors="ignore")
-
+def run_llm(prompt):
+    response = client.chat.completions.create(
+        model="llama3-8b-8192",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
 def make_qa_chain():
     retriever = load_retriever()
 
@@ -48,6 +50,6 @@ Question: {query}
 
 Answer:
 """
-        return run_ollama(prompt)
+        return run_llm(prompt)
 
     return answer
