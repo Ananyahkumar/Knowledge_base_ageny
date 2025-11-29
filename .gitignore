@@ -6,3 +6,5 @@ gcp_key.json
 .env
 chroma_db/
 temp.pdf
+.streamlit/secrets.toml
+gcp_key_base64.txt

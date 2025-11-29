@@ -71,5 +71,6 @@ def log_to_sheets(values, spreadsheet_id: str, range_name: str = "Sheet1!A1", va
     except Exception as e:
         LOG.exception("Failed to log to Google Sheets.")
         # Show message in Streamlit logs (do not leak secrets)
-        st.error("Failed to write to Google Sheets — check app logs and credentials.")
+        st.warning("Failed to write to Google Sheets — check app logs and credentials.")
+        # Re-raise so caller can handle it if needed
         raise
