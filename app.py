@@ -3,6 +3,8 @@ from ingest import pdf_to_text, chunk_text
 from vector_store import create_chroma
 from qa_service import make_qa_chain
 from sheets_logger import log_to_sheets
+from datetime import datetime
+log_to_sheets([[datetime.now().isoformat(), query, answer]])
 
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
@@ -33,7 +35,7 @@ if st.button("Ask") and query:
 
     with st.spinner("Thinking... locally!"):
         answer = qa(query)
-        log_to_sheets(query, answer)
+        log_to_sheets([[query, answer]])
 
     st.subheader("Answer")
     st.write(answer)
