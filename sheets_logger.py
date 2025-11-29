@@ -4,6 +4,10 @@ import streamlit as st
 import json
 from google.oauth2.service_account import Credentials
 
+import streamlit as st
+st.write("RAW SECRET:", st.secrets["GCP_KEY"])
+
+
 # ---- CONFIG ----
 SHEET_ID = "1NMVAH4ERSChGQfnB9HwacOkQGzB7cEE2AxqZVKQhHs0"
 SHEET_NAME = "Sheet1"   # default sheet name
